@@ -18,7 +18,7 @@ public class Main {
         int opcao;
 
         do {
-            System.out.println("\n====== SISTEMA DE ORÇAMENTO - SERRALHERIA VALENTE ======\n");
+            System.out.println("\n====== SISTEMA DE ORÇAMENTO - SERRALHERIA VALENTE ======");
             System.out.println("1 - Criar orçamento");
             System.out.println("2 - Ver tabela de preços");
             System.out.println("3 - Cadastrar novo serviço");
@@ -50,10 +50,28 @@ public class Main {
                     String opcaoEnter = sc.nextLine();
                     break;
                 case 3:
-                    System.out.println("Cadastrar novo serviço selecionado.");
+                    while(true) {
+                        cadastrarServico();
+
+                        System.out.println("Deseja realizar outro cadastro de serviço? (S/N)");
+                        String opcaoNovoCadastroServico = sc.nextLine();
+
+                        if (opcaoNovoCadastroServico.equalsIgnoreCase("N")) {
+                            break;
+                        }
+                    }
                     break;
                 case 4:
-                    System.out.println("Cadastrar novo material selecionado.");
+                    while(true) {
+                        cadastrarMaterial();
+
+                        System.out.println("Deseja realizar outro cadastro de material? (S/N)");
+                        String opcaoNovoCadastroMaterial = sc.nextLine();
+
+                        if (opcaoNovoCadastroMaterial.equalsIgnoreCase("N")) {
+                            break;
+                        }
+                    }
                     break;
                 case 5:
                     System.out.println("Cadastrar/atualizar preço selecionado.");
@@ -309,5 +327,54 @@ public class Main {
         }
 
         return 0;
+    }
+
+    public static void cadastrarServico() {
+        System.out.println("\n====== CADASTRAR NOVO SERVIÇO ======");
+
+        System.out.print("Nome do serviço: ");
+        String nomeServico = sc.nextLine();
+
+        System.out.println("\nTipo de cálculo:");
+        System.out.println("1 - Área");
+        System.out.println("2 - Metro linear");
+        System.out.println("Digite o número correspondente ao tipo de cálculo:");
+
+        int opcaoTipoDeCalculo = sc.nextInt();
+        sc.nextLine();
+
+        TipoCalculo tipoCalculo;
+
+        if (opcaoTipoDeCalculo == 1) {
+            tipoCalculo = TipoCalculo.AREA;
+        } else if (opcaoTipoDeCalculo == 2) {
+            tipoCalculo = TipoCalculo.LINEAR;
+        } else {
+            System.out.println("Opção inválida. Por favor digite um número válido!");
+            return;
+        }
+
+
+        Servico novoServico = new Servico(nomeServico, tipoCalculo);
+
+        servicos.add(novoServico);
+
+        System.out.println("\nServiço \"" + nomeServico + "\" cadastrado com sucesso!");
+    }
+
+    public static void cadastrarMaterial() {
+        System.out.println("\n====== CADASTRAR NOVO MATERIAL ======");
+
+        System.out.print("Nome do material: ");
+        String nomeMaterial = sc.nextLine();
+
+
+        Material novoMaterial = new Material(nomeMaterial);
+
+        materiais.add(novoMaterial);
+
+        System.out.println("\n Material \"" + nomeMaterial + "\" cadastrado com sucesso!");
+
+
     }
 }
