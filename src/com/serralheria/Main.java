@@ -206,13 +206,15 @@ public class Main {
             }
         }
 
+        double somaExtras = 0;
+
         if (extras.isEmpty()){
             System.out.println("\nNenhum valor extra adicionado");
         } else {
             System.out.println("\n ====== VALORES EXTRAS ======");
 
 
-            double somaExtras = 0;
+
 
             for (int i = 0; i < extras.size(); i++) {
 
@@ -231,9 +233,11 @@ public class Main {
             System.out.printf("Total parcial do orçamento: R$ %.2f%n", precoOrcamento);
         }
 
+
         System.out.println("\nDeseja adicionar um desconto no valor final? (S/N)");
         String opcaoDesconto = sc.nextLine();
 
+        double valorDescontoAplicado = 0;
         String valorDesconto;
         double desconto = 0;
         if (opcaoDesconto.equalsIgnoreCase("S")) {
@@ -244,11 +248,14 @@ public class Main {
                 valorDesconto = valorDesconto.replace("%", "").trim();
                 desconto = Double.parseDouble(valorDesconto);
                 desconto = desconto / 100;
-                precoOrcamento = precoOrcamento - (precoOrcamento * desconto);
+                valorDescontoAplicado = precoOrcamento * desconto;
+                precoOrcamento = precoOrcamento - (valorDescontoAplicado);
+
 
             } else {
                 desconto = Double.parseDouble(valorDesconto);
                 precoOrcamento -= desconto;
+                valorDescontoAplicado = desconto;
             }
         }
 
@@ -260,7 +267,7 @@ public class Main {
 
         System.out.printf("Valor do material - R$ %.2f%n",valorMaterial);
         System.out.printf("Valor da mão de obra - R$ %.2f%n",valorMaoDeObra);
-        System.out.printf("Desconto - R$ %.2f%n", desconto); /* arrumar depois */
+        System.out.printf("Desconto - R$ %.2f%n", valorDescontoAplicado);
 
         System.out.printf("VALOR TOTAL DO ORÇAMENTO - R$ %.2f%n", precoOrcamento);
 
