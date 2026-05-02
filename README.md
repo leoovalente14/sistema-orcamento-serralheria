@@ -1,15 +1,18 @@
 # Sistema de Orçamento em Java
 
-Projeto desenvolvido para prática de lógica de programação e Java.
+Projeto desenvolvido em Java para simular a criação de orçamentos para serviços de serralheria.
 
 ## Funcionalidades
-- Entrada de dados via console
+- Cadastro de dados do orçamento
 - Cálculo de valores
-- Aplicação de descontos
+- Aplicação de descontos em porcentagem ou valor fixo
 - Adição de valores extras
+- Exibição do resumo final do orçamento
 
-## Tecnologias
+## Tecnologias utilizadas
 - Java
+- Programação orientada a objetos
+- Entrada de dados via console
 
-## Objetivo
-Praticar conceitos de programação e evoluir como desenvolvedor.
+## Objetivo do projeto
+Praticar lógica de programação, organização de código e conceitos iniciais de orientação a objetos.
