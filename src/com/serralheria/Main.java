@@ -46,6 +46,8 @@ public class Main {
 
                 case 2:
                     verTabelaPrecos();
+                    System.out.println("Pressione ENTER para voltar ao menu...");
+                    String opcaoEnter = sc.nextLine();
                     break;
                 case 3:
                     System.out.println("Cadastrar novo serviço selecionado.");
@@ -281,7 +283,20 @@ public class Main {
     }
 
     public static void verTabelaPrecos(){
-        System.out.println("\n ====== TABELA DE PREÇOS ======");
+        System.out.println("\n ====== TABELA DE PREÇOS ======\n");
+
+        int i = 1;
+
+        for (PrecoServico ps : tabelaPrecos) {
+
+            System.out.printf("%d - %s | %s | R$ %.2f%n",
+                    i,
+                    ps.getServico().getNome(),
+                    ps.getMaterial().getNome(),
+                    ps.getPreco());
+            i++;
+
+        }
     }
 
     public static double buscarPreco(Servico servico, Material material) {
