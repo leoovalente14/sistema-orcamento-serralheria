@@ -74,8 +74,17 @@ public class Main {
                     }
                     break;
                 case 5:
-                    System.out.println("Cadastrar/atualizar preço selecionado.");
+                    while(true) {
+                        cadastrarPreco();
+                        System.out.println("Deseja realizar outro cadastro de preço? (S/N)");
+                        String opcaoCadastroPreco = sc.nextLine();
+
+                        if (opcaoCadastroPreco.equalsIgnoreCase("N")){
+                            break;
+                        }
+                    }
                     break;
+
                 case 6:
                     System.out.println("Encerrando o sistema...");
                     break;
@@ -231,7 +240,7 @@ public class Main {
         if (extras.isEmpty()){
             System.out.println("\nNenhum valor extra adicionado");
         } else {
-            System.out.println("\n ====== VALORES EXTRAS ======");
+            System.out.println("\n====== VALORES EXTRAS ======");
 
 
 
@@ -301,7 +310,7 @@ public class Main {
     }
 
     public static void verTabelaPrecos(){
-        System.out.println("\n ====== TABELA DE PREÇOS ======\n");
+        System.out.println("\n====== TABELA DE PREÇOS ======\n");
 
         int i = 1;
 
@@ -373,7 +382,78 @@ public class Main {
 
         materiais.add(novoMaterial);
 
-        System.out.println("\n Material \"" + nomeMaterial + "\" cadastrado com sucesso!");
+        System.out.println("\nMaterial \"" + nomeMaterial + "\" cadastrado com sucesso!");
+
+
+    }
+
+    public static void cadastrarPreco() {
+        System.out.println("\n====== CADASTRAR PREÇO ======");
+
+        System.out.println("------SERVIÇOS------");
+        for ( int i = 0; i < servicos.size(); i++) {
+            System.out.println((i + 1) + " - " + servicos.get(i).getNome());
+        }
+
+        System.out.println("Digite o número correspondente ao serviço:");
+        int opcaoTipoServiço = sc.nextInt();
+        sc.nextLine();
+
+        Servico servicoEscolhido = servicos.get(opcaoTipoServiço - 1);
+
+        System.out.println("Serviço \"" + servicoEscolhido.getNome() + "\" selecionado com sucesso!");
+
+        System.out.println("------ MATERIAIS ------");
+
+        for (int i = 0; i < materiais.size(); i++) {
+            System.out.println((i + 1) + " - " + materiais.get(i).getNome());
+        }
+
+        System.out.println("Digite o número correspondente ao material a ser utilizado:");
+
+        int opcaoTipoMaterial = sc.nextInt();
+        sc.nextLine();
+
+        Material materialEscolhido = materiais.get(opcaoTipoMaterial - 1);
+
+        System.out.println("Material \"" + materialEscolhido.getNome() + "\" selecionado com sucesso!");
+
+        System.out.println("------ CADASTRO PREÇO ------");
+
+        System.out.println("Digite o novo preço do " + servicoEscolhido.getNome() + " de " + materialEscolhido.getNome() + "!");
+
+        double precoEscolhido = sc.nextDouble();
+        sc.nextLine();
+
+        boolean verificacaoTabelaPrecos = false;
+
+        for (PrecoServico ps: tabelaPrecos) {
+            if (ps.getServico() == servicoEscolhido &&
+                ps.getMaterial() == materialEscolhido) {
+                ps.setPreco(precoEscolhido);
+                verificacaoTabelaPrecos = true;
+                System.out.printf("Preço do %s de %s atualizado com o valor de R$ %.2f%n"
+                        , servicoEscolhido.getNome()
+                        , materialEscolhido.getNome()
+                        , precoEscolhido);
+                break;
+
+            }
+        }
+
+        if(!verificacaoTabelaPrecos){
+
+            PrecoServico novoPreco = new PrecoServico(servicoEscolhido, materialEscolhido, precoEscolhido);
+
+            tabelaPrecos.add(novoPreco);
+
+            System.out.printf("Preço do %s de %s cadastrado com o valor de R$ %.2f%n"
+                    , servicoEscolhido.getNome()
+                    , materialEscolhido.getNome()
+                    , precoEscolhido);
+        }
+
+
 
 
     }
