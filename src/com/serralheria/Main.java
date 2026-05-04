@@ -127,166 +127,40 @@ public class Main {
 
     public static void criarOrcamento(){
 
-        List<Extra> extras = new ArrayList<>();
 
-        System.out.println("\n====== NOVO ORÇAMENTO ======\n");
+        Cliente cliente = cadastrarCliente();
 
-        System.out.println("------ DADOS DO CLIENTE ------\n");
+        Servico servicoEscolhido = selecionarServico();
 
-        System.out.println("Nome do cliente: ");
-        String nome = sc.nextLine();
-
-        System.out.println("Endereço do cliente: ");
-        String endereco = sc.nextLine();
-
-        System.out.println("Celular do cliente: ");
-        String celular = sc.nextLine();
-
-        System.out.println("\nCliente cadastrado!");
-
-        Cliente cliente = new Cliente(nome, endereco, celular);
-
-        System.out.println("\n------ SERVIÇO ------");
-
-        for (int i = 0; i < servicos.size(); i++) {
-            System.out.println((i + 1) + " - " + servicos.get(i).getNome());
-        }
-
-        System.out.println("Digite o número correspondente ao serviço:");
-        int opcaoServico = sc.nextInt();
-        sc.nextLine();
-
-        Servico servicoEscolhido = servicos.get(opcaoServico - 1);
-
-        System.out.println("\nServiço selecionado - " + servicoEscolhido.getNome());
-
-        System.out.println("\n------ MATERIAL ------\n");
-
-        for (int i = 0; i < materiais.size(); i++) {
-            System.out.println((i + 1) + " - " + materiais.get(i).getNome());
-        }
-
-        System.out.println("Digite o número correspondente ao material utilizado no serviço:");
-        int opcaoMaterial = sc.nextInt();
-        sc.nextLine();
-
-        Material materialEscolhido = materiais.get(opcaoMaterial - 1);
-
-        System.out.println("\nMaterial selecionado - " + materialEscolhido.getNome());
+        Material materialEscolhido = selecionarMaterial();
 
         double precoBase = buscarPreco(servicoEscolhido, materialEscolhido);
 
         System.out.println("\nPreço por metro - R$ " + precoBase);
 
-        double medida1;
-        double medida2 = 0;
-        double precoOrcamento;
+        double valorMaterial = calcularValorBase(servicoEscolhido, precoBase);
 
-        if (servicoEscolhido.getTipoCalculo() == TipoCalculo.AREA){
+        double precoOrcamento = valorMaterial;
 
-            System.out.println("\nDigite a altura em metros:");
-            medida1 = sc.nextDouble();
-            sc.nextLine();
+        System.out.println("Preço do serviço: R$ " + valorMaterial);
 
-            System.out.println("Digite a largura em metros:");
-            medida2 = sc.nextDouble();
-            sc.nextLine();
-
-            precoOrcamento = medida1 * medida2 * precoBase;
-
-        } else {
-            System.out.println("Digite o comprimento em metros:");
-            medida1 = sc.nextDouble();
-            sc.nextLine();
-
-            precoOrcamento = medida1 * precoBase;
-
-        }
-
-        double valorMaterial = precoOrcamento;
-
-        System.out.println("Preço do serviço: R$ " + precoOrcamento);
-
-        System.out.println("\nDigite o preço da mão de obra do serviço:");
-
-        double valorMaoDeObra = sc.nextDouble();
-        sc.nextLine();
+        double valorMaoDeObra = lerMaoDeObra();
 
         precoOrcamento += valorMaoDeObra;
 
         System.out.printf("Total parcial do orçamento = R$ %.2f%n",precoOrcamento);
 
 
-        while(true) {
-            System.out.println("\nDeseja adicionar um valor extra no orçamento? (S/N)");
-            String opcaoExtra = sc.nextLine();
+        List<Extra> extras = new ArrayList<>();
+        double somaExtras = calcularExtras(extras);
+        precoOrcamento += somaExtras;
 
-            if (opcaoExtra.equalsIgnoreCase("N")){
-                break;
-            }
-
-            if (opcaoExtra.equalsIgnoreCase("S")){
-                System.out.println("Digite o motivo do valor extra:");
-                String nomeExtra = sc.nextLine();
-                System.out.println("Digite o valor extra:");
-                double valorExtra = sc.nextDouble();
-                sc.nextLine();
-                extras.add(new Extra(nomeExtra, valorExtra));
-            }
-        }
-
-        double somaExtras = 0;
-
-        if (extras.isEmpty()){
-            System.out.println("\nNenhum valor extra adicionado");
-        } else {
-            System.out.println("\n====== VALORES EXTRAS ======");
-
-
-
-
-            for (int i = 0; i < extras.size(); i++) {
-
-                Extra extra = extras.get(i);
-
-                somaExtras += extra.getValor();
-
-                System.out.printf((i + 1) + " - %s - R$ %.2f%n",
-                        extra.getMotivo(),
-                        extra.getValor()
-                );
-            }
-
-            precoOrcamento += somaExtras;
-
+        if (somaExtras > 0) {
             System.out.printf("Total parcial do orçamento: R$ %.2f%n", precoOrcamento);
         }
 
-
-        System.out.println("\nDeseja adicionar um desconto no valor final? (S/N)");
-        String opcaoDesconto = sc.nextLine();
-
-        double valorDescontoAplicado = 0;
-        String valorDesconto;
-        double desconto = 0;
-        if (opcaoDesconto.equalsIgnoreCase("S")) {
-            System.out.println("Digite o valor do desconto: (% ou R$)");
-            valorDesconto = sc.nextLine();
-
-            if(valorDesconto.contains("%")) {
-                valorDesconto = valorDesconto.replace("%", "").trim();
-                desconto = Double.parseDouble(valorDesconto);
-                desconto = desconto / 100;
-                valorDescontoAplicado = precoOrcamento * desconto;
-                precoOrcamento = precoOrcamento - (valorDescontoAplicado);
-
-
-            } else {
-                desconto = Double.parseDouble(valorDesconto);
-                precoOrcamento -= desconto;
-                valorDescontoAplicado = desconto;
-            }
-        }
+        double valorDescontoAplicado = calcularDesconto(precoOrcamento);
+        precoOrcamento -= valorDescontoAplicado;
 
         System.out.println("\n====== ORÇAMENTO FINAL ======\n");
 
@@ -307,6 +181,145 @@ public class Main {
 
 
 
+    }
+
+    public static Cliente cadastrarCliente(){
+        System.out.println("\n====== NOVO ORÇAMENTO ======\n");
+
+        System.out.println("------ DADOS DO CLIENTE ------\n");
+
+        System.out.println("Nome do cliente: ");
+        String nome = sc.nextLine();
+
+        System.out.println("Endereço do cliente: ");
+        String endereco = sc.nextLine();
+
+        System.out.println("Celular do cliente: ");
+        String celular = sc.nextLine();
+
+        Cliente cliente = new Cliente(nome, endereco, celular);
+
+        System.out.println("Cliente cadastrado com sucesso!");
+
+        return cliente;
+
+    }
+
+    public static Servico selecionarServico() {
+        System.out.println("\n------ SERVIÇO ------");
+
+        for (int i = 0; i < servicos.size(); i++) {
+            System.out.println((i + 1) + " - " + servicos.get(i).getNome());
+        }
+
+        System.out.println("Digite o número correspondente ao serviço:");
+        int opcaoServico = sc.nextInt();
+        sc.nextLine();
+
+        Servico servicoEscolhido = servicos.get(opcaoServico - 1);
+
+        System.out.println("\nServiço selecionado - " + servicoEscolhido.getNome());
+
+        return servicoEscolhido;
+    }
+
+    public static Material selecionarMaterial() {
+        System.out.println("\n------ MATERIAL ------\n");
+
+        for (int i = 0; i < materiais.size(); i++) {
+            System.out.println((i + 1) + " - " + materiais.get(i).getNome());
+        }
+
+        System.out.println("Digite o número correspondente ao material utilizado no serviço:");
+        int opcaoMaterial = sc.nextInt();
+        sc.nextLine();
+
+        Material materialEscolhido = materiais.get(opcaoMaterial - 1);
+
+        System.out.println("\nMaterial selecionado - " + materialEscolhido.getNome());
+
+        return materialEscolhido;
+    }
+
+    public static double calcularValorBase(Servico servicoEscolhido, double precoBase) {
+        double medida1;
+        double medida2 = 0;
+        double precoOrcamento;
+        if (servicoEscolhido.getTipoCalculo() == TipoCalculo.AREA){
+
+
+            System.out.println("\nDigite a altura em metros:");
+            medida1 = sc.nextDouble();
+            sc.nextLine();
+
+            System.out.println("Digite a largura em metros:");
+            medida2 = sc.nextDouble();
+            sc.nextLine();
+
+            precoOrcamento = medida1 * medida2 * precoBase;
+
+        } else {
+            System.out.println("Digite o comprimento em metros:");
+            medida1 = sc.nextDouble();
+            sc.nextLine();
+
+            precoOrcamento = medida1 * precoBase;
+
+        }
+        return precoOrcamento;
+    }
+
+    public static double lerMaoDeObra() {
+        System.out.println("\nDigite o preço da mão de obra do serviço:");
+
+        double valorMaoDeObra = sc.nextDouble();
+        sc.nextLine();
+
+        return valorMaoDeObra;
+    }
+
+    public static double calcularExtras(List<Extra> extras) {
+        while (true) {
+            System.out.println("\nDeseja adicionar um valor extra no orçamento? (S/N)");
+            String opcaoExtra = sc.nextLine();
+
+            if (opcaoExtra.equalsIgnoreCase("N")) {
+                break;
+            }
+
+            if (opcaoExtra.equalsIgnoreCase("S")) {
+                System.out.println("Digite o motivo do valor extra:");
+                String nomeExtra = sc.nextLine();
+
+                System.out.println("Digite o valor extra:");
+                double valorExtra = sc.nextDouble();
+                sc.nextLine();
+
+                extras.add(new Extra(nomeExtra, valorExtra));
+            }
+        }
+
+        double somaExtras = 0;
+
+        if (extras.isEmpty()) {
+            System.out.println("\nNenhum valor extra adicionado");
+        } else {
+            System.out.println("\n====== VALORES EXTRAS ======");
+
+            for (int i = 0; i < extras.size(); i++) {
+                Extra extra = extras.get(i);
+
+                somaExtras += extra.getValor();
+
+                System.out.printf("%d - %s - R$ %.2f%n",
+                        i + 1,
+                        extra.getMotivo(),
+                        extra.getValor()
+                );
+            }
+        }
+
+        return somaExtras;
     }
 
     public static void verTabelaPrecos(){
@@ -336,6 +349,34 @@ public class Main {
         }
 
         return 0;
+    }
+
+    public static double calcularDesconto(double precoOrcamento){
+        System.out.println("\nDeseja adicionar um desconto no valor final? (S/N)");
+        String opcaoDesconto = sc.nextLine();
+
+        double valorDescontoAplicado = 0;
+        String valorDesconto;
+        if (opcaoDesconto.equalsIgnoreCase("S")) {
+            System.out.println("Digite o valor do desconto: (% ou R$)");
+            valorDesconto = sc.nextLine();
+
+            if(valorDesconto.contains("%")) {
+                valorDesconto = valorDesconto.replace("%", "").trim();
+                double percentualDesconto = Double.parseDouble(valorDesconto);
+                percentualDesconto = percentualDesconto / 100;
+                valorDescontoAplicado = precoOrcamento * percentualDesconto;
+
+
+
+            } else {
+                valorDescontoAplicado  = Double.parseDouble(valorDesconto);
+            }
+
+            System.out.println("Desconto aplicado com sucesso!");
+        }
+
+        return valorDescontoAplicado;
     }
 
     public static void cadastrarServico() {
