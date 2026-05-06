@@ -59,19 +59,21 @@ public class Main {
             System.out.println("4 - Cadastrar novo material");
             System.out.println("5 - Cadastrar/atualizar preço");
             System.out.println("6 - Sair");
-            System.out.println("\nEscolha uma opção: ");
+            System.out.println("\nEscolha uma opção:");
 
             if(sc.hasNextInt()) {
+
                 int opcao = sc.nextInt();
                 sc.nextLine();
-                if (opcao >= 1 && opcao <= 6) {
+
+                if(opcao >= 1 && opcao <= 6) {
                     return opcao;
                 } else {
-                    System.out.println("Número inválido!");
+                    System.out.println("\nNúmero inválido!");
                 }
 
             } else {
-                System.out.println("Digite um número válido!");
+                System.out.println("\nNúmero inválido!");
                 sc.nextLine();
             }
         }
@@ -83,10 +85,10 @@ public class Main {
                 while(true) {
                     criarOrcamento();
 
-                    System.out.println("Deseja realizar outro orçamento? (S/N)");
-                    String opcaoNovoOrcamento = sc.nextLine();
+                    String opcaoNovoOrcamento =
+                            lerSimOuNao("\nDeseja realizar outro orçamento? (S/N)");
 
-                    if(opcaoNovoOrcamento.equalsIgnoreCase("N")){
+                    if(opcaoNovoOrcamento.equals("N")){
                         break;
                     }
                 }
@@ -101,10 +103,10 @@ public class Main {
                 while(true) {
                     cadastrarServico();
 
-                    System.out.println("Deseja realizar outro cadastro de serviço? (S/N)");
-                    String opcaoNovoCadastroServico = sc.nextLine();
+                    String opcaoNovoCadastroServico =
+                            lerSimOuNao("Deseja realizar outro cadastro de serviço? (S/N)");
 
-                    if (opcaoNovoCadastroServico.equalsIgnoreCase("N")) {
+                    if (opcaoNovoCadastroServico.equals("N")) {
                         break;
                     }
                 }
@@ -113,10 +115,10 @@ public class Main {
                 while(true) {
                     cadastrarMaterial();
 
-                    System.out.println("Deseja realizar outro cadastro de material? (S/N)");
-                    String opcaoNovoCadastroMaterial = sc.nextLine();
+                    String opcaoNovoCadastroMaterial =
+                            lerSimOuNao("\nDeseja realizar outro cadastro de material? (S/N)");
 
-                    if (opcaoNovoCadastroMaterial.equalsIgnoreCase("N")) {
+                    if (opcaoNovoCadastroMaterial.equals("N")) {
                         break;
                     }
                 }
@@ -124,10 +126,11 @@ public class Main {
             case 5:
                 while(true) {
                     cadastrarPreco();
-                    System.out.println("Deseja realizar outro cadastro de preço? (S/N)");
-                    String opcaoCadastroPreco = sc.nextLine();
 
-                    if (opcaoCadastroPreco.equalsIgnoreCase("N")){
+                    String opcaoCadastroPreco =
+                            lerSimOuNao("\nDeseja realizar outro cadastro de preço? (S/N)");
+
+                    if (opcaoCadastroPreco.equals("N")){
                         break;
                     }
                 }
@@ -269,20 +272,13 @@ public class Main {
         if (servicoEscolhido.getTipoCalculo() == TipoCalculo.AREA){
 
 
-            System.out.println("\nDigite a altura em metros:");
-            medida1 = sc.nextDouble();
-            sc.nextLine();
-
-            System.out.println("Digite a largura em metros:");
-            medida2 = sc.nextDouble();
-            sc.nextLine();
+            medida1 = lerDoubleValido("\nDigite a altura em metros:");
+            medida2 = lerDoubleValido("\nDigite a largura em metros:");
 
             precoOrcamento = medida1 * medida2 * precoBase;
 
         } else {
-            System.out.println("Digite o comprimento em metros:");
-            medida1 = sc.nextDouble();
-            sc.nextLine();
+            medida1 = lerDoubleValido("\nDigite o comprimento em metros:");
 
             precoOrcamento = medida1 * precoBase;
 
@@ -291,30 +287,25 @@ public class Main {
     }
 
     public static double lerMaoDeObra() {
-        System.out.println("\nDigite o preço da mão de obra do serviço:");
-
-        double valorMaoDeObra = sc.nextDouble();
-        sc.nextLine();
+        double valorMaoDeObra = lerDoubleValido("\nDigite o preço da mão de obra do serviço:");
 
         return valorMaoDeObra;
     }
 
     public static double calcularExtras(List<Extra> extras) {
         while (true) {
-            System.out.println("\nDeseja adicionar um valor extra no orçamento? (S/N)");
-            String opcaoExtra = sc.nextLine();
+            String opcaoExtra =
+                    lerSimOuNao("\nDeseja adicionar um valor extra no orçamento? (S/N)");
 
-            if (opcaoExtra.equalsIgnoreCase("N")) {
+            if (opcaoExtra.equals("N")) {
                 break;
             }
 
-            if (opcaoExtra.equalsIgnoreCase("S")) {
+            if (opcaoExtra.equals("S")) {
                 System.out.println("Digite o motivo do valor extra:");
                 String nomeExtra = sc.nextLine();
 
-                System.out.println("Digite o valor extra:");
-                double valorExtra = sc.nextDouble();
-                sc.nextLine();
+                double valorExtra = lerDoubleValido("Digite o valor extra:");
 
                 extras.add(new Extra(nomeExtra, valorExtra));
             }
@@ -373,12 +364,12 @@ public class Main {
     }
 
     public static double calcularDesconto(double precoOrcamento){
-        System.out.println("\nDeseja adicionar um desconto no valor final? (S/N)");
-        String opcaoDesconto = sc.nextLine();
+        String opcaoDesconto =
+                lerSimOuNao("\nDeseja adicionar um desconto no valor final? (S/N)");
 
         double valorDescontoAplicado = 0;
         String valorDesconto;
-        if (opcaoDesconto.equalsIgnoreCase("S")) {
+        if (opcaoDesconto.equals("S")) {
             System.out.println("Digite o valor do desconto: (% ou R$)");
             valorDesconto = sc.nextLine();
 
@@ -400,7 +391,13 @@ public class Main {
         return valorDescontoAplicado;
     }
 
-    public static void exibirResumoOrcamento(Cliente cliente, double precoOrcamento, double valorDescontoAplicado, double valorMaterial, double valorMaoDeObra){
+    public static void exibirResumoOrcamento(
+            Cliente cliente,
+            double valorMaterial,
+            double valorMaoDeObra,
+            double valorDescontoAplicado,
+            double precoOrcamento
+    ) {
         System.out.println("\n====== ORÇAMENTO FINAL ======\n");
 
         System.out.println("Nome do cliente: " + cliente.getNome());
@@ -496,10 +493,7 @@ public class Main {
 
         System.out.println("------ CADASTRO PREÇO ------");
 
-        System.out.println("Digite o novo preço do " + servicoEscolhido.getNome() + " de " + materialEscolhido.getNome() + "!");
-
-        double precoEscolhido = sc.nextDouble();
-        sc.nextLine();
+        double precoEscolhido = lerDoubleValido("Digite o novo preço do " + servicoEscolhido.getNome() + " de " + materialEscolhido.getNome() + ":");
 
         boolean verificacaoTabelaPrecos = false;
 
@@ -542,10 +536,36 @@ public class Main {
                 sc.nextLine();
                 return valorValido;
             } else {
-                System.out.println("Número inválido!");
+                System.out.println("\nNúmero inválido!");
                 sc.nextLine();
             }
         }
     }
 
+    public static int lerIntValido(String mensagem) {
+        while(true){
+            System.out.println(mensagem);
+            if(sc.hasNextInt()){
+                int valorValido = sc.nextInt();
+                sc.nextLine();
+                return valorValido;
+            } else {
+                System.out.println("\nNúmero inválido!");
+                sc.nextLine();
+            }
+        }
+    }
+
+    public static String lerSimOuNao(String mensagem) {
+        while(true){
+            System.out.println(mensagem);
+            String opcao = sc.nextLine().toUpperCase();
+            if(opcao.equals("S") || opcao.equals("N")){
+                return opcao;
+            } else {
+                System.out.println("Caractere inválido, utilize S ou N!");
+            }
+
+        }
+    }
 }
