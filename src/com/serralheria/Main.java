@@ -195,14 +195,12 @@ public class Main {
 
         System.out.println("------ DADOS DO CLIENTE ------\n");
 
-        System.out.println("Nome do cliente: ");
-        String nome = sc.nextLine();
+        String nome = lerStringValida("Nome do cliente: ");
 
         System.out.println("Endereço do cliente: ");
-        String endereco = sc.nextLine();
+        String endereco = lerStringValida("Endereço do cliente: ");
 
-        System.out.println("Celular do cliente: ");
-        String celular = sc.nextLine();
+        String celular = lerStringValida("Celular do cliente: ");
 
         Cliente cliente = new Cliente(nome, endereco, celular);
 
@@ -302,8 +300,8 @@ public class Main {
             }
 
             if (opcaoExtra.equals("S")) {
-                System.out.println("Digite o motivo do valor extra:");
-                String nomeExtra = sc.nextLine();
+
+                String nomeExtra = lerStringValida("Digite o motivo do valor extra:");
 
                 double valorExtra = lerDoubleValido("Digite o valor extra:");
 
@@ -414,8 +412,7 @@ public class Main {
     public static void cadastrarServico() {
         System.out.println("\n====== CADASTRAR NOVO SERVIÇO ======");
 
-        System.out.print("Nome do serviço: ");
-        String nomeServico = sc.nextLine();
+        String nomeServico = lerStringValida("Nome do serviço: ");
 
         System.out.println("\nTipo de cálculo:");
         System.out.println("1 - Área");
@@ -447,8 +444,7 @@ public class Main {
     public static void cadastrarMaterial() {
         System.out.println("\n====== CADASTRAR NOVO MATERIAL ======");
 
-        System.out.print("Nome do material: ");
-        String nomeMaterial = sc.nextLine();
+        String nomeMaterial = lerStringValida("Nome do material: ");
 
 
         Material novoMaterial = new Material(nomeMaterial);
@@ -534,7 +530,11 @@ public class Main {
             if (sc.hasNextDouble()) {
                 double valorValido = sc.nextDouble();
                 sc.nextLine();
-                return valorValido;
+                if(valorValido >= 0){
+                    return valorValido;
+                } else {
+                    System.out.println("\nNúmero inválido!");
+                }
             } else {
                 System.out.println("\nNúmero inválido!");
                 sc.nextLine();
@@ -566,6 +566,19 @@ public class Main {
                 System.out.println("Caractere inválido, utilize S ou N!");
             }
 
+        }
+    }
+
+    public static String lerStringValida(String mensagem) {
+        while(true){
+            System.out.println(mensagem);
+            String string = sc.nextLine().trim();
+
+            if(string.isEmpty()){
+                System.out.println("Você não digitou nada!");
+            } else {
+                return string;
+            }
         }
     }
 }
