@@ -1,37 +1,89 @@
 package com.serralheria;
 
-import java.util.List;
-
 public class Orcamento {
     private Cliente cliente;
     private Servico servico;
     private Material material;
-    private double medida1;
-    private double medida2;
-    private double precoBase;
-    private double maoDeObra;
-    private List<Extra> extras;
-    private double desconto;
-    private double total;
+    private double valorMaterial;
+    private double valorMaoDeObra;
+    private double valorExtras;
+    private double valorDesconto;
+    private double valorTotal;
 
-    public void CalcularTotal(){
-        double valorBase;
-
-        if (servico.getTipoCalculo() == TipoCalculo.AREA) {
-            valorBase = medida1 * medida2 * precoBase;
-        } else {
-            valorBase = medida1* precoBase;
-        }
-
-        double somaExtras = 0;
-        for (Extra e : extras) {
-            somaExtras += e.getValor();
-        }
-
-        total = valorBase + maoDeObra + somaExtras - desconto;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public double getTotal() {
-        return total;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public Servico getServico() {
+        return servico;
+    }
+
+    public void setServico(Servico servico) {
+        this.servico = servico;
+    }
+
+    public Material getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(Material material) {
+        this.material = material;
+    }
+
+    public double getValorMaterial() {
+        return valorMaterial;
+    }
+
+    public void setValorMaterial(double valorMaterial) {
+        this.valorMaterial = valorMaterial;
+    }
+
+    public double getValorMaoDeObra() {
+        return valorMaoDeObra;
+    }
+
+    public void setValorMaoDeObra(double valorMaoDeObra) {
+        this.valorMaoDeObra = valorMaoDeObra;
+    }
+
+    public double getValorExtras() {
+        return valorExtras;
+    }
+
+    public void setValorExtras(double valorExtras) {
+        this.valorExtras = valorExtras;
+    }
+
+    public double getValorDesconto() {
+        return valorDesconto;
+    }
+
+    public void setValorDesconto(double valorDesconto) {
+        this.valorDesconto = valorDesconto;
+    }
+
+    public double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(double valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+
+    public Orcamento (Cliente cliente, Servico servico, Material material,
+                      double valorMaterial, double valorMaoDeObra,
+                      double valorExtras, double valorDesconto){
+        this.cliente = cliente;
+        this.servico = servico;
+        this.material = material;
+        this.valorMaterial = valorMaterial;
+        this.valorMaoDeObra = valorMaoDeObra;
+        this.valorExtras = valorExtras;
+        this.valorDesconto = valorDesconto;
+        this.valorTotal = valorMaterial + valorMaoDeObra + valorExtras - valorDesconto;
     }
 }

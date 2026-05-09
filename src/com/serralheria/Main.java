@@ -180,14 +180,18 @@ public class Main {
         double valorDescontoAplicado = calcularDesconto(precoOrcamento);
         precoOrcamento -= valorDescontoAplicado;
 
-
-        exibirResumoOrcamento(
+        Orcamento orcamento = new Orcamento(
                 cliente,
+                servicoEscolhido,
+                materialEscolhido,
                 valorMaterial,
                 valorMaoDeObra,
-                valorDescontoAplicado,
-                precoOrcamento
+                somaExtras,
+                valorDescontoAplicado
         );
+
+
+        exibirResumoOrcamento(orcamento);
     }
 
     public static Cliente cadastrarCliente(){
@@ -197,7 +201,6 @@ public class Main {
 
         String nome = lerStringValida("Nome do cliente: ");
 
-        System.out.println("Endereço do cliente: ");
         String endereco = lerStringValida("Endereço do cliente: ");
 
         String celular = lerStringValida("Celular do cliente: ");
@@ -389,24 +392,18 @@ public class Main {
         return valorDescontoAplicado;
     }
 
-    public static void exibirResumoOrcamento(
-            Cliente cliente,
-            double valorMaterial,
-            double valorMaoDeObra,
-            double valorDescontoAplicado,
-            double precoOrcamento
-    ) {
+    public static void exibirResumoOrcamento(Orcamento orcamento) {
         System.out.println("\n====== ORÇAMENTO FINAL ======\n");
 
-        System.out.println("Nome do cliente: " + cliente.getNome());
-        System.out.println("Endereço do cliente: " + cliente.getEndereco());
-        System.out.println("Celular do cliente: " + cliente.getCelular());
+        System.out.println("Nome do cliente: " + orcamento.getCliente().getNome());
+        System.out.println("Endereço do cliente: " + orcamento.getCliente().getEndereco());
+        System.out.println("Celular do cliente: " + orcamento.getCliente().getCelular());
 
-        System.out.printf("Valor do material - R$ %.2f%n",valorMaterial);
-        System.out.printf("Valor da mão de obra - R$ %.2f%n",valorMaoDeObra);
-        System.out.printf("Desconto - R$ %.2f%n", valorDescontoAplicado);
+        System.out.printf("Valor do material - R$ %.2f%n",orcamento.getValorMaterial());
+        System.out.printf("Valor da mão de obra - R$ %.2f%n",orcamento.getValorMaoDeObra());
+        System.out.printf("Desconto - R$ %.2f%n", orcamento.getValorDesconto());
 
-        System.out.printf("VALOR TOTAL DO ORÇAMENTO - R$ %.2f%n", precoOrcamento);
+        System.out.printf("VALOR TOTAL DO ORÇAMENTO - R$ %.2f%n", orcamento.getValorTotal());
     }
 
     public static void cadastrarServico() {
