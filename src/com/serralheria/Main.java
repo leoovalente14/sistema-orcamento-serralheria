@@ -12,6 +12,14 @@ public class Main {
     static List<Material> materiais = new ArrayList<>();
     static List<PrecoServico> tabelaPrecos = new ArrayList<>();
 
+    public static final String RESET = "\u001B[0m";
+
+    public static final String VERMELHO = "\u001B[31m";
+    public static final String VERDE = "\u001B[32m";
+    public static final String AMARELO = "\u001B[33m";
+    public static final String AZUL = "\u001B[34m";
+    public static final String CIANO = "\u001B[36m";
+
     public static void main(String[] args) {
         carregarDadosIniciais();
         int opcao;
@@ -52,15 +60,15 @@ public class Main {
 
     public static int lerOpcaoMenu(){
         while(true){
-            System.out.println("==================================================");
+            System.out.println(AMARELO + "==================================================");
             System.out.println("            SISTEMA SERRALHERIA VALENTE           ");
-            System.out.println("==================================================");
+            System.out.println("==================================================\n" + RESET);
             System.out.println("[1] Criar orçamento");
             System.out.println("[2] Ver tabela de preços");
             System.out.println("[3] Cadastrar novo serviço");
             System.out.println("[4] Cadastrar novo material");
             System.out.println("[5] Cadastrar ou atualizar preço");
-            System.out.println("[6] Sair\n");
+            System.out.println(VERMELHO + "[6] Sair\n" + RESET);
             System.out.println("--------------------------------------------------");
             System.out.println("Selecione uma opção:");
 
@@ -72,11 +80,11 @@ public class Main {
                 if(opcao >= 1 && opcao <= 6) {
                     return opcao;
                 } else {
-                    System.out.println("\nNúmero inválido!\n");
+                    System.out.println(VERMELHO + "\n✖ Número inválido!\n" + RESET);
                 }
 
             } else {
-                System.out.println("\nNúmero inválido!\n");
+                System.out.println(VERMELHO + "\n✖ Número inválido!\n" + RESET);
                 sc.nextLine();
             }
         }
@@ -338,7 +346,7 @@ public class Main {
 
                 somaExtras += extra.getValor();
 
-                System.out.printf("%d - %s - R$ %.2f%n",
+                System.out.printf("[%d] - %s - R$ %.2f%n",
                         i + 1,
                         extra.getMotivo(),
                         extra.getValor()
@@ -350,13 +358,15 @@ public class Main {
     }
 
     public static void verTabelaPrecos(){
-        System.out.println("\n====== TABELA DE PREÇOS ======\n");
+        System.out.println("\n\n==================================================");
+        System.out.println("                  TABELA DE PREÇOS                ");
+        System.out.println("==================================================");
 
         int i = 1;
 
         for (PrecoServico ps : tabelaPrecos) {
 
-            System.out.printf("%d - %s | %s | R$ %.2f%n",
+            System.out.printf("[%d] - %s | %s | R$ %.2f%n",
                     i,
                     ps.getServico().getNome(),
                     ps.getMaterial().getNome(),
@@ -408,30 +418,32 @@ public class Main {
     }
 
     public static void exibirResumoOrcamento(Orcamento orcamento) {
-        System.out.println("\n==================================================");
-        System.out.println("                   ORÇAMENTO FINAL                  ");
+        System.out.println("\n\n==================================================");
+        System.out.println("                   ORÇAMENTO FINAL                ");
         System.out.println("==================================================\n");
 
         System.out.println("Nome do cliente: " + orcamento.getCliente().getNome());
         System.out.println("Endereço do cliente: " + orcamento.getCliente().getEndereco());
         System.out.println("Celular do cliente: " + orcamento.getCliente().getCelular());
 
-        System.out.printf("Valor do material - R$ %.2f%n",orcamento.getValorMaterial());
-        System.out.printf("Valor da mão de obra - R$ %.2f%n",orcamento.getValorMaoDeObra());
-        System.out.printf("Desconto - R$ %.2f%n", orcamento.getValorDesconto());
-
-        System.out.printf("VALOR TOTAL DO ORÇAMENTO - R$ %.2f%n", orcamento.getValorTotal());
+        System.out.printf("\n\n%-20s R$ %.2f%n", "Valor material:", orcamento.getValorMaterial());
+        System.out.printf("%-20s R$ %.2f%n", "Mão de obra:", orcamento.getValorMaoDeObra());
+        System.out.printf("%-20s R$ %.2f%n", "Desconto:", orcamento.getValorDesconto());
+        System.out.printf("%-20s R$ %.2f%n", "VALOR TOTAL:", orcamento.getValorTotal());
     }
 
     public static void cadastrarServico() {
-        System.out.println("\n====== CADASTRAR NOVO SERVIÇO ======");
+        System.out.println("\n\n==================================================");
+        System.out.println("             CADASTRAR NOVO SERVIÇO               ");
+        System.out.println("==================================================");
 
-        String nomeServico = lerStringValida("Nome do serviço: ");
+        String nomeServico = lerStringValida("\nNome do serviço: ");
 
         System.out.println("\nTipo de cálculo:");
-        System.out.println("1 - Área");
-        System.out.println("2 - Metro linear");
-        System.out.println("Digite o número correspondente ao tipo de cálculo:");
+        System.out.println("[1] Área");
+        System.out.println("[2] Metro linear");
+        System.out.println("\n--------------------------------------------------");
+        System.out.println("Selecione o tipo de cálculo:");
 
         int opcaoTipoDeCalculo = sc.nextInt();
         sc.nextLine();
@@ -456,9 +468,11 @@ public class Main {
     }
 
     public static void cadastrarMaterial() {
-        System.out.println("\n====== CADASTRAR NOVO MATERIAL ======");
+        System.out.println("\n\n==================================================");
+        System.out.println("             CADASTRAR NOVO MATERIAL              ");
+        System.out.println("==================================================");
 
-        String nomeMaterial = lerStringValida("Nome do material: ");
+        String nomeMaterial = lerStringValida("\nNome do material: ");
 
 
         Material novoMaterial = new Material(nomeMaterial);
@@ -471,14 +485,16 @@ public class Main {
     }
 
     public static void cadastrarPreco() {
-        System.out.println("\n====== CADASTRAR PREÇO ======");
+        System.out.println("\n\n==================================================");
+        System.out.println("                 CADASTRAR PREÇO                  ");
+        System.out.println("==================================================");
 
-        System.out.println("------SERVIÇOS------");
+        System.out.println("------------------- SERVIÇOS ---------------------");
         for ( int i = 0; i < servicos.size(); i++) {
-            System.out.println((i + 1) + " - " + servicos.get(i).getNome());
+            System.out.println("[" + (i + 1) + "] " + servicos.get(i).getNome());
         }
-
-        System.out.println("Digite o número correspondente ao serviço:");
+        System.out.println("\n--------------------------------------------------");
+        System.out.println("Selecione o serviço:");
         int opcaoTipoServiço = sc.nextInt();
         sc.nextLine();
 
@@ -486,13 +502,13 @@ public class Main {
 
         System.out.println("Serviço \"" + servicoEscolhido.getNome() + "\" selecionado com sucesso!");
 
-        System.out.println("------ MATERIAIS ------");
+        System.out.println("\n------------------- MATERIAIS --------------------");
 
         for (int i = 0; i < materiais.size(); i++) {
-            System.out.println((i + 1) + " - " + materiais.get(i).getNome());
+            System.out.println("[" + (i + 1) + "] " + materiais.get(i).getNome());
         }
 
-        System.out.println("Digite o número correspondente ao material a ser utilizado:");
+        System.out.println("Selecione o material:");
 
         int opcaoTipoMaterial = sc.nextInt();
         sc.nextLine();
@@ -501,7 +517,7 @@ public class Main {
 
         System.out.println("Material \"" + materialEscolhido.getNome() + "\" selecionado com sucesso!");
 
-        System.out.println("------ CADASTRO PREÇO ------");
+        System.out.println("\n------------------- CADASTRO PREÇO ---------------");
 
         double precoEscolhido = lerDoubleValido("Digite o novo preço do " + servicoEscolhido.getNome() + " de " + materialEscolhido.getNome() + ":");
 
