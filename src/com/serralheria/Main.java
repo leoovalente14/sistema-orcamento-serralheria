@@ -70,7 +70,7 @@ public class Main {
             System.out.println("[5] Cadastrar ou atualizar preço");
             System.out.println(VERMELHO + "[6] Sair\n" + RESET);
             System.out.println("--------------------------------------------------");
-            System.out.println("Selecione uma opção:");
+            System.out.println(CIANO + "➜ Selecione uma opção:" + RESET);
 
             if(sc.hasNextInt()) {
 
@@ -97,7 +97,7 @@ public class Main {
                     criarOrcamento();
 
                     String opcaoNovoOrcamento =
-                            lerSimOuNao("\nDeseja realizar outro orçamento? (S/N)");
+                            lerSimOuNao(CIANO + "\n➜ Deseja realizar outro orçamento? (S/N)" + RESET);
 
                     if(opcaoNovoOrcamento.equals("N")){
                         break;
@@ -107,7 +107,7 @@ public class Main {
 
             case 2:
                 verTabelaPrecos();
-                System.out.println("Pressione ENTER para voltar ao menu...");
+                System.out.println(CIANO + "➜ Pressione ENTER para voltar ao menu..." + RESET);
                 String opcaoEnter = sc.nextLine();
                 break;
             case 3:
@@ -115,7 +115,7 @@ public class Main {
                     cadastrarServico();
 
                     String opcaoNovoCadastroServico =
-                            lerSimOuNao("Deseja realizar outro cadastro de serviço? (S/N)");
+                            lerSimOuNao(CIANO + "➜ Deseja realizar outro cadastro de serviço? (S/N)" + RESET);
 
                     if (opcaoNovoCadastroServico.equals("N")) {
                         break;
@@ -127,7 +127,7 @@ public class Main {
                     cadastrarMaterial();
 
                     String opcaoNovoCadastroMaterial =
-                            lerSimOuNao("\nDeseja realizar outro cadastro de material? (S/N)");
+                            lerSimOuNao(CIANO + "\n➜ Deseja realizar outro cadastro de material? (S/N)" + RESET);
 
                     if (opcaoNovoCadastroMaterial.equals("N")) {
                         break;
@@ -139,7 +139,7 @@ public class Main {
                     cadastrarPreco();
 
                     String opcaoCadastroPreco =
-                            lerSimOuNao("\nDeseja realizar outro cadastro de preço? (S/N)");
+                            lerSimOuNao(CIANO + "\n➜ Deseja realizar outro cadastro de preço? (S/N)" + RESET);
 
                     if (opcaoCadastroPreco.equals("N")){
                         break;
@@ -148,7 +148,7 @@ public class Main {
                 break;
 
             case 6:
-                System.out.println("Encerrando o sistema...");
+                System.out.println(VERMELHO + "⚠ Encerrando o sistema..." + RESET);
                 break;
 
         }
@@ -165,19 +165,19 @@ public class Main {
 
         double precoBase = buscarPreco(servicoEscolhido, materialEscolhido);
 
-        System.out.println("\nPreço por metro - R$ " + precoBase);
+        System.out.printf("\nPreço por metro - " + VERDE + "R$ %.2f%n" + RESET ,precoBase);
 
         double valorMaterial = calcularValorBase(servicoEscolhido, precoBase);
 
         double precoOrcamento = valorMaterial;
 
-        System.out.println("\nTotal parcial do orçamento: R$ " + valorMaterial);
+        System.out.printf("\nTotal parcial do orçamento: " + VERDE + "R$ %.2f%n" + RESET ,valorMaterial);
 
         double valorMaoDeObra = lerMaoDeObra();
 
         precoOrcamento += valorMaoDeObra;
 
-        System.out.printf("\nTotal parcial do orçamento = R$ %.2f%n",precoOrcamento);
+        System.out.printf("\nTotal parcial do orçamento: " + VERDE + "R$ %.2f%n" + RESET ,precoOrcamento);
 
 
         List<Extra> extras = new ArrayList<>();
@@ -185,7 +185,7 @@ public class Main {
         precoOrcamento += somaExtras;
 
         if (somaExtras > 0) {
-            System.out.printf("\nTotal parcial do orçamento: R$ %.2f%n", precoOrcamento);
+            System.out.printf("\nTotal parcial do orçamento: " + VERDE + "R$ %.2f%n" + RESET ,precoOrcamento);
         }
 
         double valorDescontoAplicado = calcularDesconto(precoOrcamento);
@@ -206,21 +206,21 @@ public class Main {
     }
 
     public static Cliente cadastrarCliente(){
-        System.out.println("\n\n==================================================");
+        System.out.println(AMARELO + "\n\n==================================================");
         System.out.println("                   NOVO ORÇAMENTO                 ");
-        System.out.println("==================================================\n");
+        System.out.println("==================================================\n" + RESET);
 
         System.out.println("---------------- DADOS DO CLIENTE ----------------\n");
 
-        String nome = lerStringValida("Nome do cliente:");
+        String nome = lerStringValida(CIANO + "Nome do cliente:" + RESET);
 
-        String endereco = lerStringValida("\nEndereço do cliente:");
+        String endereco = lerStringValida(CIANO + "\nEndereço do cliente:" + RESET);
 
-        String celular = lerStringValida("\nCelular do cliente:");
+        String celular = lerStringValida(CIANO + "\nCelular do cliente:" + RESET);
 
         Cliente cliente = new Cliente(nome, endereco, celular);
 
-        System.out.println("\nCliente cadastrado com sucesso!\n");
+        System.out.println(VERDE + "\nCliente cadastrado com sucesso ✔\n" + RESET);
 
         return cliente;
 
@@ -234,21 +234,21 @@ public class Main {
             }
 
             System.out.println("\n--------------------------------------------------");
-            System.out.println("Selecione o serviço:");
+            System.out.println(CIANO + "➜ Selecione o serviço:" + RESET);
 
             if (sc.hasNextInt()) {
                 int opcaoServico = sc.nextInt();
                 sc.nextLine();
                 if(opcaoServico > 0 && opcaoServico <= servicos.size()) {
                     Servico servicoEscolhido = servicos.get(opcaoServico - 1);
-                    System.out.println("\nServiço selecionado - " + servicoEscolhido.getNome());
+                    System.out.println(VERDE + "\n➜ Serviço selecionado - " + servicoEscolhido.getNome() + RESET);
                     return servicoEscolhido;
                 } else {
-                    System.out.println("Número inválido!\n");
+                    System.out.println(VERMELHO + "✖ Número inválido!\n" + RESET);
 
                 }
             } else {
-                System.out.println("Número inválido!\n");
+                System.out.println(VERMELHO + "✖ Número inválido!\n" + RESET);
                 sc.nextLine();
             }
         }
@@ -263,19 +263,19 @@ public class Main {
             }
 
             System.out.println("\n--------------------------------------------------");
-            System.out.println("Selecione o material:");
+            System.out.println(CIANO + "➜ Selecione o material:" + RESET);
             if(sc.hasNextInt()) {
                 int opcaoMaterial = sc.nextInt();
                 sc.nextLine();
                 if(opcaoMaterial > 0 && opcaoMaterial <= materiais.size()){
                     Material materialEscolhido = materiais.get(opcaoMaterial - 1);
-                    System.out.println("\nMaterial selecionado - " + materialEscolhido.getNome());
+                    System.out.println(VERDE + "\n➜ Material selecionado - " + materialEscolhido.getNome() + RESET);
                     return materialEscolhido;
                 } else {
-                    System.out.println("\nNúmero inválido!");
+                    System.out.println(VERMELHO + "\n✖ Número inválido!" + RESET);
                 }
             } else {
-                System.out.println("\nNúmero inválido!");
+                System.out.println(VERMELHO +"\n✖ Número inválido!" + RESET);
                 sc.nextLine();
             }
         }
@@ -291,13 +291,13 @@ public class Main {
         if (servicoEscolhido.getTipoCalculo() == TipoCalculo.AREA){
 
 
-            medida1 = lerDoubleValido("\nDigite a altura em metros:");
-            medida2 = lerDoubleValido("\nDigite a largura em metros:");
+            medida1 = lerDoubleValido(CIANO + "\nDigite a altura em metros:" + RESET);
+            medida2 = lerDoubleValido(CIANO + "\nDigite a largura em metros:" + RESET);
 
             precoOrcamento = medida1 * medida2 * precoBase;
 
         } else {
-            medida1 = lerDoubleValido("\nDigite o comprimento em metros:");
+            medida1 = lerDoubleValido(CIANO + "\nDigite o comprimento em metros:" + RESET);
 
             precoOrcamento = medida1 * precoBase;
 
@@ -309,7 +309,7 @@ public class Main {
 
         System.out.println("\n------------------- MÃO DE OBRA ------------------");
 
-        double valorMaoDeObra = lerDoubleValido("\nDigite o preço da mão de obra do serviço:");
+        double valorMaoDeObra = lerDoubleValido(CIANO + "\nDigite o preço da mão de obra do serviço:" + RESET);
 
         return valorMaoDeObra;
     }
@@ -318,7 +318,7 @@ public class Main {
         System.out.println("\n--------------------- EXTRAS ---------------------");
         while (true) {
             String opcaoExtra =
-                    lerSimOuNao("\nDeseja adicionar um valor extra no orçamento? (S/N)");
+                    lerSimOuNao(CIANO + "\nDeseja adicionar um valor extra no orçamento? (S/N)" + RESET);
 
             if (opcaoExtra.equals("N")) {
                 break;
@@ -326,9 +326,9 @@ public class Main {
 
             if (opcaoExtra.equals("S")) {
 
-                String nomeExtra = lerStringValida("\nDigite o motivo do valor extra:");
+                String nomeExtra = lerStringValida(CIANO + "\nDigite o motivo do valor extra:" + RESET);
 
-                double valorExtra = lerDoubleValido("\nDigite o valor extra:");
+                double valorExtra = lerDoubleValido(CIANO + "\nDigite o valor extra:" + RESET);
 
                 extras.add(new Extra(nomeExtra, valorExtra));
             }
@@ -337,7 +337,7 @@ public class Main {
         double somaExtras = 0;
 
         if (extras.isEmpty()) {
-            System.out.println("\nNenhum valor extra adicionado!");
+            System.out.println(VERMELHO + "\n⚠ Nenhum valor extra adicionado!" + RESET);
         } else {
             System.out.println("\n---------------- VALORES EXTRAS ------------------");
 
@@ -346,7 +346,7 @@ public class Main {
 
                 somaExtras += extra.getValor();
 
-                System.out.printf("[%d] - %s - R$ %.2f%n",
+                System.out.printf("[%d] - %s - " + VERDE + "R$ %.2f%n" + RESET,
                         i + 1,
                         extra.getMotivo(),
                         extra.getValor()
@@ -358,15 +358,15 @@ public class Main {
     }
 
     public static void verTabelaPrecos(){
-        System.out.println("\n\n==================================================");
+        System.out.println(AMARELO + "\n\n==================================================");
         System.out.println("                  TABELA DE PREÇOS                ");
-        System.out.println("==================================================");
+        System.out.println("==================================================" + RESET);
 
         int i = 1;
 
         for (PrecoServico ps : tabelaPrecos) {
 
-            System.out.printf("[%d] - %s | %s | R$ %.2f%n",
+            System.out.printf("[%d]  %s | %s | " + VERDE + "R$ %.2f%n" + RESET,
                     i,
                     ps.getServico().getNome(),
                     ps.getMaterial().getNome(),
@@ -391,12 +391,12 @@ public class Main {
     public static double calcularDesconto(double precoOrcamento){
         System.out.println("\n-------------------- DESCONTO --------------------");
         String opcaoDesconto =
-                lerSimOuNao("\nDeseja adicionar um desconto no valor final? (S/N)");
+                lerSimOuNao(CIANO + "\nDeseja adicionar um desconto no valor final? (S/N)" + RESET);
 
         double valorDescontoAplicado = 0;
         String valorDesconto;
         if (opcaoDesconto.equals("S")) {
-            System.out.println("Digite o valor do desconto: (% ou R$)");
+            System.out.println(CIANO + "Digite o valor do desconto: (% ou R$)" + RESET);
             valorDesconto = sc.nextLine();
 
             if(valorDesconto.contains("%")) {
@@ -411,16 +411,16 @@ public class Main {
                 valorDescontoAplicado  = Double.parseDouble(valorDesconto);
             }
 
-            System.out.println("Desconto aplicado com sucesso!");
+            System.out.println(VERDE + "➜ Desconto aplicado com sucesso!" + RESET);
         }
 
         return valorDescontoAplicado;
     }
 
     public static void exibirResumoOrcamento(Orcamento orcamento) {
-        System.out.println("\n\n==================================================");
+        System.out.println(AMARELO + "\n\n==================================================");
         System.out.println("                   ORÇAMENTO FINAL                ");
-        System.out.println("==================================================\n");
+        System.out.println("==================================================\n" + RESET);
 
         System.out.println("Nome do cliente: " + orcamento.getCliente().getNome());
         System.out.println("Endereço do cliente: " + orcamento.getCliente().getEndereco());
@@ -429,21 +429,21 @@ public class Main {
         System.out.printf("\n\n%-20s R$ %.2f%n", "Valor material:", orcamento.getValorMaterial());
         System.out.printf("%-20s R$ %.2f%n", "Mão de obra:", orcamento.getValorMaoDeObra());
         System.out.printf("%-20s R$ %.2f%n", "Desconto:", orcamento.getValorDesconto());
-        System.out.printf("%-20s R$ %.2f%n", "VALOR TOTAL:", orcamento.getValorTotal());
+        System.out.printf("%-20s " + VERDE + "R$ %.2f" + RESET + "%n", "➜ VALOR TOTAL:", orcamento.getValorTotal());
     }
 
     public static void cadastrarServico() {
-        System.out.println("\n\n==================================================");
+        System.out.println(AMARELO +"\n\n==================================================");
         System.out.println("             CADASTRAR NOVO SERVIÇO               ");
-        System.out.println("==================================================");
+        System.out.println("==================================================" + RESET);
 
-        String nomeServico = lerStringValida("\nNome do serviço: ");
+        String nomeServico = lerStringValida(CIANO + "\nNome do serviço: " + RESET);
 
         System.out.println("\nTipo de cálculo:");
         System.out.println("[1] Área");
         System.out.println("[2] Metro linear");
         System.out.println("\n--------------------------------------------------");
-        System.out.println("Selecione o tipo de cálculo:");
+        System.out.println(CIANO + "➜ Selecione o tipo de cálculo:" + RESET);
 
         int opcaoTipoDeCalculo = sc.nextInt();
         sc.nextLine();
@@ -455,7 +455,7 @@ public class Main {
         } else if (opcaoTipoDeCalculo == 2) {
             tipoCalculo = TipoCalculo.LINEAR;
         } else {
-            System.out.println("Opção inválida. Por favor digite um número válido!");
+            System.out.println(VERMELHO + "✖ Opção inválida. Por favor digite um número válido!" + RESET);
             return;
         }
 
@@ -464,43 +464,43 @@ public class Main {
 
         servicos.add(novoServico);
 
-        System.out.println("\nServiço \"" + nomeServico + "\" cadastrado com sucesso!");
+        System.out.println(VERDE + "\nServiço \"" + nomeServico + "\" cadastrado com sucesso ✔" + RESET);
     }
 
     public static void cadastrarMaterial() {
-        System.out.println("\n\n==================================================");
+        System.out.println(AMARELO + "\n\n==================================================");
         System.out.println("             CADASTRAR NOVO MATERIAL              ");
-        System.out.println("==================================================");
+        System.out.println("==================================================" + RESET);
 
-        String nomeMaterial = lerStringValida("\nNome do material: ");
+        String nomeMaterial = lerStringValida(CIANO + "\nNome do material:" + RESET);
 
 
         Material novoMaterial = new Material(nomeMaterial);
 
         materiais.add(novoMaterial);
 
-        System.out.println("\nMaterial \"" + nomeMaterial + "\" cadastrado com sucesso!");
+        System.out.println(VERDE + "\nMaterial \"" + nomeMaterial + "\" cadastrado com sucesso ✔" + RESET);
 
 
     }
 
     public static void cadastrarPreco() {
-        System.out.println("\n\n==================================================");
+        System.out.println(AMARELO + "\n\n==================================================");
         System.out.println("                 CADASTRAR PREÇO                  ");
-        System.out.println("==================================================");
+        System.out.println("==================================================" + RESET);
 
         System.out.println("------------------- SERVIÇOS ---------------------");
         for ( int i = 0; i < servicos.size(); i++) {
             System.out.println("[" + (i + 1) + "] " + servicos.get(i).getNome());
         }
         System.out.println("\n--------------------------------------------------");
-        System.out.println("Selecione o serviço:");
-        int opcaoTipoServiço = sc.nextInt();
+        System.out.println(CIANO + "➜ Selecione o serviço:" + RESET);
+        int opcaoTipoServico = sc.nextInt();
         sc.nextLine();
 
-        Servico servicoEscolhido = servicos.get(opcaoTipoServiço - 1);
+        Servico servicoEscolhido = servicos.get(opcaoTipoServico - 1);
 
-        System.out.println("Serviço \"" + servicoEscolhido.getNome() + "\" selecionado com sucesso!");
+        System.out.println(VERDE + "Serviço \"" + servicoEscolhido.getNome() + "\" selecionado com sucesso ✔" + RESET);
 
         System.out.println("\n------------------- MATERIAIS --------------------");
 
@@ -508,18 +508,18 @@ public class Main {
             System.out.println("[" + (i + 1) + "] " + materiais.get(i).getNome());
         }
 
-        System.out.println("Selecione o material:");
+        System.out.println(CIANO + "➜ Selecione o material:" + RESET);
 
         int opcaoTipoMaterial = sc.nextInt();
         sc.nextLine();
 
         Material materialEscolhido = materiais.get(opcaoTipoMaterial - 1);
 
-        System.out.println("Material \"" + materialEscolhido.getNome() + "\" selecionado com sucesso!");
+        System.out.println(VERDE + "Material \"" + materialEscolhido.getNome() + "\" selecionado com sucesso ✔" + RESET);
 
         System.out.println("\n------------------- CADASTRO PREÇO ---------------");
 
-        double precoEscolhido = lerDoubleValido("Digite o novo preço do " + servicoEscolhido.getNome() + " de " + materialEscolhido.getNome() + ":");
+        double precoEscolhido = lerDoubleValido(CIANO + "➜ Digite o novo preço do " + servicoEscolhido.getNome() + " de " + materialEscolhido.getNome() + ":" + RESET);
 
         boolean verificacaoTabelaPrecos = false;
 
@@ -528,7 +528,7 @@ public class Main {
                 ps.getMaterial() == materialEscolhido) {
                 ps.setPreco(precoEscolhido);
                 verificacaoTabelaPrecos = true;
-                System.out.printf("Preço do %s de %s atualizado com o valor de R$ %.2f%n"
+                System.out.printf("Preço do %s de %s atualizado com o valor  " + VERDE + "R$ %.2f%n" + RESET
                         , servicoEscolhido.getNome()
                         , materialEscolhido.getNome()
                         , precoEscolhido);
@@ -543,7 +543,7 @@ public class Main {
 
             tabelaPrecos.add(novoPreco);
 
-            System.out.printf("Preço do %s de %s cadastrado com o valor de R$ %.2f%n"
+            System.out.printf("Preço do %s de %s cadastrado com o valor de " + VERDE + "R$ %.2f%n" + RESET
                     , servicoEscolhido.getNome()
                     , materialEscolhido.getNome()
                     , precoEscolhido);
@@ -563,10 +563,10 @@ public class Main {
                 if(valorValido >= 0){
                     return valorValido;
                 } else {
-                    System.out.println("\nNúmero inválido!");
+                    System.out.println(VERMELHO + "\n✖ Número inválido!" + RESET);
                 }
             } else {
-                System.out.println("\nNúmero inválido!");
+                System.out.println(VERMELHO + "\n✖ Número inválido!" + RESET);
                 sc.nextLine();
             }
         }
@@ -580,7 +580,7 @@ public class Main {
                 sc.nextLine();
                 return valorValido;
             } else {
-                System.out.println("\nNúmero inválido!");
+                System.out.println(VERMELHO + "\n✖ Número inválido!" + RESET);
                 sc.nextLine();
             }
         }
@@ -593,7 +593,7 @@ public class Main {
             if(opcao.equals("S") || opcao.equals("N")){
                 return opcao;
             } else {
-                System.out.println("Caractere inválido, utilize S ou N!");
+                System.out.println(VERMELHO + "✖ Caractere inválido, utilize S ou N!" + RESET);
             }
 
         }
@@ -605,7 +605,7 @@ public class Main {
             String string = sc.nextLine().trim();
 
             if(string.isEmpty()){
-                System.out.println("Você não digitou nada!");
+                System.out.println(VERMELHO + "✖ Você não digitou nada!" + RESET);
             } else {
                 return string;
             }
